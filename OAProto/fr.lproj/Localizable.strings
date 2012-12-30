@@ -1,0 +1,59 @@
+/* 
+  Localizable.strings
+  OAProto
+
+  Created by Ivan Touzeau on 18/11/12.
+  Copyright (c) 2012 Ivan Touzeau. All rights reserved.
+*/
+
+/*
+ 
+ home
+ 
+ */
+
+"WIP" = "Section en cours de développement.";
+
+"HOME_TITLE" = "Accueil";
+"HOME_NB_ALLBOOKS" = "Tous les manuscrits";
+"HOME_NB_MYBOOKS" = "Mes manuscrits";
+"HOME_NB_MYPAGES" = "Mes pages";
+"HOME_NB_MYNOTES" = "Mes notes";
+"HOME_NB_USERS" = "Utilisateurs";
+
+"PAGELIST_NOTES_NONOTES" = "Pas de notes";
+"PAGELIST_NOTES_NOTES" = "%d notes";
+"PAGELIST_NOTES_ONENOTE" = "1 note";
+
+/*
+ 
+ edit view
+ 
+ */
+
+"EDIT_NOTE_SAVEERROR_TITLE" = "Erreur";
+"EDIT_NOTE_SAVEERROR_TEXT" = "Sauvegarde impossible.";
+
+"EDIT_PAGES_BOOK" = "Les pages du livre";
+"EDIT_PAGES_MYPAGES" = "Uniquement mes pages";
+
+"EDIT_NOTE_LIST_NOTITLE" = "(Sans titre)";
+"EDIT_NOTE_LIST_NONOTES" = "Cette page ne comprends pas de notes";
+
+"EDIT_NB_NOTES" = "Notes";
+
+"EDIT_NB_ADDTOMYPAGES" = "Ajouter à mes pages";
+"EDIT_NB_PAGES" = "Pages";
+"EDIT_NB_ZOOM" = "Vue zoom";
+
+"EDIT_TB_SHOWTOOLS" = "Afficher la note";
+"EDIT_TB_HIDETOOLS" = "Masquer la note";
+
+"EDIT_ALERT_MV_TITLE_NOFOUND" = "Aucune forme trouvée";
+"EDIT_ALERT_MV_TEXT_NOFOUND" = "Essayez avec une tolérance plus élevée.";
+
+"EDIT_ALERT_MV_TITLE_TOOMUCHFOUND" = "Forme trouvée trop complexe";
+"EDIT_ALERT_MV_TEXT_TOOMUCHFOUND" = "Essayez en diminuant la tolérance.";
+
+"EDIT_ALERT_SAVENOTE_TITLE" = "Impossible d'enregistrer";
+"EDIT_ALERT_SAVENOTE_TEXT" = "Il faut créer au moins une forme pour pouvoir enregistrer la note.";

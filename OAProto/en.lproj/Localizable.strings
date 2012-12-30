@@ -1,0 +1,59 @@
+/* 
+  Localizable.strings
+  OAProto
+
+  Created by Ivan Touzeau on 18/11/12.
+  Copyright (c) 2012 Ivan Touzeau. All rights reserved.
+*/
+
+/*
+ 
+ home
+ 
+ */
+
+"WIP" = "Work in progress.";
+
+"HOME_TITLE" = "Home";
+"HOME_NB_ALLBOOKS" = "All books";
+"HOME_NB_MYBOOKS" = "My books";
+"HOME_NB_MYPAGES" = "My pages";
+"HOME_NB_MYNOTES" = "My notes";
+"HOME_NB_USERS" = "Users";
+
+"PAGELIST_NOTES_NONOTES" = "No notes";
+"PAGELIST_NOTES_NOTES" = "%d notes";
+"PAGELIST_NOTES_ONENOTE" = "1 note";
+
+/*
+ 
+ edit view
+ 
+ */
+
+"EDIT_NOTE_SAVEERROR_TITLE" = "Error";
+"EDIT_NOTE_SAVEERROR_TEXT" = "Unable to save.";
+
+"EDIT_PAGES_BOOK" = "Current book pages";
+"EDIT_PAGES_MYPAGES" = "My pages only";
+
+"EDIT_NOTE_LIST_NOTITLE" = "(Untitled)";
+"EDIT_NOTE_LIST_NONOTES" = "This page does not contains notes";
+
+"EDIT_NB_NOTES" = "Notes";
+
+"EDIT_NB_ADDTOMYPAGES" = "Add to my pages";
+"EDIT_NB_PAGES" = "Pages";
+"EDIT_NB_ZOOM" = "Zoom view";
+
+"EDIT_TB_SHOWTOOLS" = "Show note";
+"EDIT_TB_HIDETOOLS" = "Hide note";
+
+"EDIT_ALERT_MV_TITLE_NOFOUND" = "No shape found";
+"EDIT_ALERT_MV_TEXT_NOFOUND" = "Try again with a higher tolerance.";
+
+"EDIT_ALERT_MV_TITLE_TOOMUCHFOUND" = "Shape too complex";
+"EDIT_ALERT_MV_TEXT_TOOMUCHFOUND" = "Try again with a lower tolerance.";
+
+"EDIT_ALERT_SAVENOTE_TITLE" = "Unable to save";
+"EDIT_ALERT_SAVENOTE_TEXT" = "You must create at least one shape to save the note.";

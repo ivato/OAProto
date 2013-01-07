@@ -361,11 +361,7 @@
     }
     
     [self createUser];
-    
-    // Dic will have one key per title, value will be the set of images pathes.
-    // Once we have all titles we can fill the database.
-    // NSMutableDictionary * dic = [NSMutableDictionary dictionaryWithCapacity:10];
-    
+        
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
 

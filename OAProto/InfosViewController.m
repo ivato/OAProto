@@ -9,6 +9,7 @@
 #import "InfosViewController.h"
 #import <MessageUI/MessageUI.h>
 
+/*
 #define VIEWTAG_ISEALINK             100
 #define VIEWTAG_DOMIMAIL             101
 #define VIEWTAG_MATTMAIL             102
@@ -18,6 +19,7 @@
 #define MATTMAIL                     @"Matthieu Bonicel <matthieu.bonicel@bnf.fr>"
 #define ISEAMAIL                     @"is&a bloom <contact@iseabloom.com>"
 #define ISEALINK                     @"http://www.iseabloom.com"
+*/
 
 @interface InfosViewController ()
 
@@ -25,6 +27,7 @@
 
 @implementation InfosViewController
 
+/*
 - (IBAction) onLinkButtonClicked:(id)sender
 {
     switch ( [(UIView *)sender tag] ) {
@@ -44,7 +47,7 @@
             break;
     }
 }
-
+*/
 
 - (void) mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
 {

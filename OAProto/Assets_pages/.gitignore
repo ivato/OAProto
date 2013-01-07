@@ -1,2 +1,9 @@
 [^.]*
+!a1234-1r-s-shad.png
+!a1234-1r-s.jpg
+!a1234-1r-s@2x.jpg
+!a1234-1r.jpg
+!a1234-1v-s.jpg
+!a1234-1v-s@2x.jpg
+!a1234-1v.jpg
 !.gitignore

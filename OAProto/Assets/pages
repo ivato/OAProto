@@ -1,10 +1,15 @@
 #
+# This file is used to create the books' contents on first use.
 #
+# A line that begins with 'book' starts a book content.
+# pipe used as separator.
+# Each line that calls a page not present in Pages folder should be commented out using a #.
 #
+# book|city|source|headline reference|real title|author|copyright|index of page used as thumbnail
 #
+# Each line following that line, until the next "book|" line, indicates a page for this book.
 #
-#
-#
+# index of the page|name of the page|file name with extension
 #
 
 book|Paris|BNF|Hébreu 1388|Haggadah de Pâques, 1583|na|na|1

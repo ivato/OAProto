@@ -1,0 +1,17 @@
+#
+# This file is used to create the books' contents on first use.
+#
+# A line that begins with 'book' starts a book content.
+# pipe used as separator.
+# Each line that calls a page not present in Pages folder should be commented out using a #.
+#
+# book|city|source|headline reference|real title|author|copyright|index of page used as thumbnail
+#
+# Each line following that line, until the next "book|" line, indicates a page for this book.
+#
+# index of the page|name of the page|file name with extension
+#
+
+book|City|Source|ABCD 1234|Dummy book title|na|na|1
+1|f. 1r|a1234-1r.jpg
+2|f. 1v|a1234-1v.jpg

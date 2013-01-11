@@ -80,7 +80,7 @@
 {
     NSString * userName = self.userName;
     if ( userName.length > 1 )
-        return [NSString stringWithFormat:@"%@ %@",userName,[self userEmail]];
+        return userName;
     return [self userEmail];
 }
 

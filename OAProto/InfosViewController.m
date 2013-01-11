@@ -5,6 +5,7 @@
 //  Created by Ivan Touzeau on 04/12/12.
 //  Copyright (c) 2012 Ivan Touzeau. All rights reserved.
 //
+//  InfosViewController handles the info view to display credits and copyrights.
 
 #import "InfosViewController.h"
 #import <MessageUI/MessageUI.h>
@@ -80,23 +81,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    /*
-    UITextView * tv = (UITextView *)[self.view viewWithTag:999];
-    CGFloat txtHeight = [tv contentSize].height;
-    
-    CGRect frame;
-    frame = [self.view viewWithTag:VIEWTAG_DOMIMAIL].frame;
-    frame.origin.y = txtHeight + tv.frame.origin.y + 20;
-    [[self.view viewWithTag:VIEWTAG_DOMIMAIL] setFrame:frame];
-    frame = [self.view viewWithTag:VIEWTAG_MATTMAIL].frame;
-    frame.origin.y = txtHeight + tv.frame.origin.y + 20;
-    [[self.view viewWithTag:VIEWTAG_MATTMAIL] setFrame:frame];
-    frame = [self.view viewWithTag:VIEWTAG_ISEAMAIL].frame;
-    frame.origin.y = txtHeight + tv.frame.origin.y + 20;
-    [[self.view viewWithTag:VIEWTAG_ISEAMAIL] setFrame:frame];
-*/
-    
-    // Do any additional setup after loading the view from its nib.
 }
 
 - (void)didReceiveMemoryWarning

@@ -122,11 +122,6 @@
     
     [[cell textLabel] setText:[NSString stringWithFormat:@"%@ %@",user.firstName,user.lastName]];
     [[cell detailTextLabel] setText:user.email];
-    /*
-    UIButton * buttonView = [[UIButton alloc] initWithFrame:CGRectMake(300, 5, 100, 35)];
-    [[cell contentView] addSubview:buttonView];
-    [buttonView release];
-    */
     if ( user == self.wrapper.currentUser ){
         [cell setSelected:YES];
         [cell setHighlighted:YES];
@@ -144,9 +139,6 @@
     UserViewController * userController = [[[UserViewController alloc] initWithUser:user] autorelease];
     [userController setDelegate:self];
     [self.navigationController pushViewController:userController animated:YES];
-    //[wrapper setCurrentUser:user];
-    //[self.tableView selectRowAtIndexPath:indexPath animated:YES scrollPosition:UITableViewScrollPositionTop];
-
 }
 
 #pragma mark - Rotation

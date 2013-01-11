@@ -31,6 +31,12 @@
  
  */
 
+"EDIT_NOTE_BACKSAVE_TITLE" = "Cette note n'a pas été enregistrée";
+"EDIT_NOTE_BACKSAVE_TEXT" = "Voulez vous sauvegarder vos modifications ? Elles seront perdues si vous ne sauvegardez pas maintenant.";
+"EDIT_NOTE_BACKSAVE_SAVE" = "Enregistrer";
+"EDIT_NOTE_BACKSAVE_DONT" = "Ne pas enregistrer";
+"EDIT_NOTE_BACKSAVE_CANCEL" = "Annuler";
+
 "EDIT_NOTE_SAVEERROR_TITLE" = "Erreur";
 "EDIT_NOTE_SAVEERROR_TEXT" = "Sauvegarde impossible.";
 
@@ -45,6 +51,7 @@
 "EDIT_NB_ADDTOMYPAGES" = "Ajouter à mes pages";
 "EDIT_NB_PAGES" = "Pages";
 "EDIT_NB_ZOOM" = "Vue zoom";
+"EDIT_NB_BACK" = "Accueil";
 
 "EDIT_TB_SHOWTOOLS" = "Afficher la note";
 "EDIT_TB_HIDETOOLS" = "Masquer la note";

@@ -165,13 +165,13 @@
     self.selectButton.alpha = self.selectButton.enabled ? 1.0f : 0.5f;
     
     if ( self.modalPresentationStyle == UIModalPresentationFormSheet ){
-        // modal = création d'un nouveau compte.
+        // modal = new account creation.
         [[self exportButton] removeFromSuperview];
         if ( self.userIsFirstUser )
             [[self cancelButton] removeFromSuperview];
     } else {
-        // pas modal = consultation d'un compte existant.
-        [[self cancelButton] removeFromSuperview]; // parce qu'on a déjà un bouton "back" en navbar
+        // not modal = existing account consultation.
+        [[self cancelButton] removeFromSuperview]; // Because we already have a back button in the navbar.
         [self setTitle:self.titleLabel.text];
         [[self titleLabel] removeFromSuperview];
     }

@@ -42,20 +42,6 @@
     [indexTitles release];
 }
 
-/*
- - (id) initWithMode:(PageNavigationMode)mode
-{
-    switch (mode) {
-        case PageNavigationModeBook:{
-            [self setDataSource:[wrapper currentBook].
-        }
-        default:
-            break;
-    }
-    
-}
-*/
-
 - (id) initWithEditController:(EditViewController *)controller
 {
     self = [super initWithStyle:UITableViewStylePlain];
@@ -131,7 +117,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView sectionForSectionIndexTitle:(NSString *)title atIndex:(NSInteger)index {
-    return index; //<yourSectionIndexForTheSectionForSectionIndexTitle >;
+    return index;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath

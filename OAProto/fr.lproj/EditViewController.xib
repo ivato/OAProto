@@ -66,7 +66,7 @@
 				<int key="IBUISystemItemIdentifier">16</int>
 			</object>
 			<object class="IBUIBarButtonItem" id="29049526">
-				<string key="IBUITitle">Masquer les zones</string>
+				<string key="IBUITitle">Voir toutes les notes</string>
 				<string key="targetRuntimeIdentifier">IBIPadFramework</string>
 				<int key="IBUIStyle">1</int>
 			</object>
@@ -91,6 +91,7 @@
 				<string key="NSFrameSize">{768, 250}</string>
 				<reference key="NSSuperview"/>
 				<reference key="NSWindow"/>
+				<reference key="NSNextKeyView"/>
 				<string key="NSReuseIdentifierKey">_NS:9</string>
 				<object class="NSColor" key="IBUIBackgroundColor" id="621263997">
 					<int key="NSColorSpace">10</int>
@@ -4599,7 +4600,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 										<string key="NSFrame">{{20, 20}, {210, 28}}</string>
 										<reference key="NSSuperview" ref="850666683"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="711235741"/>
+										<reference key="NSNextKeyView" ref="472340861"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -4779,6 +4780,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 										<string key="NSFrame">{{21, 44}, {257, 68}}</string>
 										<reference key="NSSuperview" ref="850666683"/>
 										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="711235741"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIClipsSubviews">YES</bool>
@@ -4820,7 +4822,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 										<string key="NSFrame">{{21, 217}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="850666683"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="407435718"/>
+										<reference key="NSNextKeyView" ref="836778938"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -4841,7 +4843,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 								<string key="NSFrame">{{20, 49}, {250, 67}}</string>
 								<reference key="NSSuperview" ref="742822250"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="850666683"/>
+								<reference key="NSNextKeyView" ref="407435718"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<object class="NSColor" key="IBUIBackgroundColor" id="427005748">
 									<int key="NSColorSpace">1</int>
@@ -4898,7 +4900,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 								<string key="NSFrame">{{20, 134}, {250, 175}}</string>
 								<reference key="NSSuperview" ref="742822250"/>
 								<reference key="NSWindow"/>
-								<reference key="NSNextKeyView" ref="836778938"/>
+								<reference key="NSNextKeyView" ref="850666683"/>
 								<string key="NSReuseIdentifierKey">_NS:9</string>
 								<reference key="IBUIBackgroundColor" ref="427005748"/>
 								<bool key="IBUIClipsSubviews">YES</bool>
@@ -5009,6 +5011,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<string key="NSFrame">{{242, 900}, {35, 31}}</string>
 						<reference key="NSSuperview" ref="965458620"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -5043,6 +5046,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<string key="NSFrame">{{0, 980}, {768, 44}}</string>
 						<reference key="NSSuperview" ref="766721923"/>
 						<reference key="NSWindow"/>
+						<reference key="NSNextKeyView"/>
 						<string key="NSReuseIdentifierKey">_NS:9</string>
 						<bool key="IBUIOpaque">NO</bool>
 						<bool key="IBUIClearsContextBeforeDrawing">NO</bool>
@@ -5757,17 +5761,25 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				<object class="IBPartialClassDescription">
 					<string key="className">EditViewController</string>
 					<string key="superclassName">UIViewController</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">onTBDeleteNoteButtonClicked:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">onTBDeleteNoteButtonClicked:</string>
-						<object class="IBActionInfo" key="NS.object.0">
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="onTBCancelNoteButtonClicked:">id</string>
+						<string key="onTBDeleteNoteButtonClicked:">id</string>
+						<string key="onTBThumbnailsButtonClicked:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="onTBCancelNoteButtonClicked:">
+							<string key="name">onTBCancelNoteButtonClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="onTBDeleteNoteButtonClicked:">
 							<string key="name">onTBDeleteNoteButtonClicked:</string>
 							<string key="candidateClassName">id</string>
 						</object>
-					</object>
+						<object class="IBActionInfo" key="onTBThumbnailsButtonClicked:">
+							<string key="name">onTBThumbnailsButtonClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="addNoteItem">UIBarButtonItem</string>
 						<string key="annotationNavigationView">UIView</string>

@@ -5,6 +5,11 @@
 //  Created by Ivan Touzeau on 18/10/12.
 //  Copyright (c) 2012 Ivan Touzeau. All rights reserved.
 //
+//  This class represents one shape of an annotation.
+//  Includes APIs for :
+//  - Drawing the shape, and to modify CGPathElements pointers.
+//  - Converting CGPathElements pointers / CoreData converter
+//  - CG helpers
 
 #import <Foundation/Foundation.h>
 #import <QuartzCore/QuartzCore.h>
@@ -239,13 +244,13 @@ static NSString * NSStringFromShapeType(uint type)
 {
     switch ( type )
     {
-        case kShapeTypePoint:return @"point";
-        case kShapeTypeBezier:return @"bezier";
-        case kShapeTypePath:return @"path";
-        case kShapeTypePolygon:return @"polygon";
-        case kShapeTypeRectangle:return @"rectangle";
-        case kShapeTypeEllipse:return @"ellipse ( in rect )";
-        default:return @"unknown shape type";
+        case kShapeTypePoint        : return @"point";
+        case kShapeTypeBezier       : return @"bezier";
+        case kShapeTypePath         : return @"path";
+        case kShapeTypePolygon      : return @"polygon";
+        case kShapeTypeRectangle    : return @"rectangle";
+        case kShapeTypeEllipse      : return @"ellipse ( in rect )";
+        default                     : return @"unknown shape type";
     }
 }
 

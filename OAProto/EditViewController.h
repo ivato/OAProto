@@ -5,6 +5,14 @@
 //  Created by Ivan Touzeau on 15/10/12.
 //  Copyright (c) 2012 Ivan Touzeau. All rights reserved.
 //
+//  EditViewController is the controller that handles all the edit views,
+//  including
+//  - upper navigation panel,
+//  - left tools panel,
+//  - top left zooming view,
+//  - upper navigation bar,
+//  - lower toolbar
+//  - main edit view
 
 #import <UIKit/UIKit.h>
 #import "PSTCollectionView.h"
@@ -26,7 +34,7 @@
 
 @end
 
-@interface EditViewController : UIViewController <UIPopoverControllerDelegate, UIActionSheetDelegate, PSUICollectionViewDataSource, PSUICollectionViewDelegate> {
+@interface EditViewController : UIViewController <UIAlertViewDelegate, UIPopoverControllerDelegate, UIActionSheetDelegate, PSUICollectionViewDataSource, PSUICollectionViewDelegate> {
     
     id<EditControllerDelegate>                delegate;
     
@@ -37,6 +45,10 @@
     OpenAnnotation                          * selectedNote;
     Page                                    * page;
     UIImage                                 * resizedImage;
+    
+                                              // will be switched to YES by OAScrollView when a modification is done, or when text fields are edited.
+                                              // will be switched to NO upon save or cancel.
+    BOOL                                      noteIsModified;
     
     DisplayMode                               mode;
     DisplayMode                               previousMode;
@@ -157,5 +169,7 @@
 
 @property (nonatomic,assign)            DisplayMode                       mode;
 @property (nonatomic,assign)            DisplayMode                       previousMode;
+
+@property (nonatomic,assign)            BOOL                              noteIsModified;
 
 @end

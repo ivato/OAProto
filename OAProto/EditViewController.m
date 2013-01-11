@@ -31,6 +31,7 @@
 
 #define VIEWTAG_PAGESCV         99
 #define VIEWTAG_PAGES          100
+#define VIEWTAG_BACKALERT      101
 
 @interface EditViewController ()
 {
@@ -86,6 +87,8 @@
 
 @synthesize image,notes,selectedNote,page;
 
+@synthesize noteIsModified;
+
 static NSString * cellIdentifier            = @"Page Cell";
 
 static NSString * NSStringFromDisplayMode(DisplayMode m)
@@ -105,7 +108,7 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
         case kDisplayModeBezier                 : return @"kDisplayModeBezier";
         case kDisplayModeEditMagicWand          : return @"kDisplayModeEditMagicWand";
             
-        default:return @"--";
+        default:return @"DisplayMode value not found";
         
     }
 }
@@ -189,6 +192,7 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
             if ( newMode == kDisplayModeNotesThumbnails ){
                 array = [NSArray arrayWithObjects:fs,hiresActivityItem,fs,addNoteItem,nil];
                 [self toggleShapePanel:-1];
+                [self.editView zoomToRect:CGRectMake(0, 0, image.size.width, image.size.height) animated:YES];
             }
         }
         
@@ -217,6 +221,29 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
 {
     return image;
 }
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if ( alertView.tag == VIEWTAG_BACKALERT ){
+        // if buttonIndex == 0, user clicked on cancel, so don't go back to home.
+        if ( buttonIndex > 0 ){
+            if ( buttonIndex == 1 ){
+                // user has clicked "don't save"
+                if ( noteIsNew ){
+                    [self deleteNote:self.selectedNote];
+                } else {
+                    [self.selectedNote revertToSaved];
+                }
+            }
+            else if ( buttonIndex == 2 ){
+                // user has clicked "save"
+                [self saveNote];
+            }
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    }
+}
+
 
 - (void) dismissKeyboardAndNavigationView
 {
@@ -368,7 +395,6 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
 
 - (void) showAlertWithTitle:(NSString *)title message:(NSString *)message
 {
-    
     UIAlertView * alert = [[UIAlertView alloc]
                           initWithTitle: NSLocalizedString(title, nil)
                           message: NSLocalizedString(message, nil)
@@ -504,6 +530,7 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
             [self setMode:kDisplayModeEditNote];
         } else {
             [self setMode:kDisplayModeNote];
+            [self toggleShapePanel:1];
             CGRect zoomRect = note.boundingBox;
             if ( CGRectEqualToRect(zoomRect, CGRectZero) == NO ){
                 [editView zoomToRect:CGRectInset(zoomRect, -200, -300) animated:YES];
@@ -636,42 +663,53 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
 
 }
 
+- (void) saveNote
+{
+    if ( self.selectedNote.shapes.count == 0 ){
+        [self showAlertWithTitle:@"EDIT_ALERT_SAVENOTE_TITLE" message:@"EDIT_ALERT_SAVENOTE_TEXT"];
+    } else {
+        [[self page] setNextNoteIndex:[NSNumber numberWithInt:self.page.nextNoteIndex.intValue+1]];
+        [self.selectedNote setTitle:titleTextField.text];
+        [self.selectedNote setContent:contentTextField.text];
+        NSError * saveError = [self.selectedNote cdSave];
+        
+        if ( saveError == nil ){
+            noteIsNew = NO;
+            noteIsModified = NO;
+            [self setMode:kDisplayModeNote];
+        } else {
+            [self showAlertWithTitle:NSLocalizedString(@"EDIT_NOTE_SAVEERROR_TITLE", nil) message:NSLocalizedString(@"EDIT_NOTE_SAVEERROR_TEXT", nil)];
+        }
+    }
+}
+
 - (IBAction) onPanelEditButtonClicked:(id)sender
 {
     [self dismissKeyboardAndNavigationView];
     
     if ( sender == self.editButton ){
+        
         [self setMode:kDisplayModeEditNote];
+        
     }
     else if ( sender == self.saveEditButton ){
         
-        if ( self.selectedNote.shapes.count == 0 ){
-            [self showAlertWithTitle:@"EDIT_ALERT_SAVENOTE_TITLE" message:@"EDIT_ALERT_SAVENOTE_TEXT"];
-        } else {
-            [[self page] setNextNoteIndex:[NSNumber numberWithInt:self.page.nextNoteIndex.intValue+1]];
-            [self.selectedNote setTitle:titleTextField.text];
-            [self.selectedNote setContent:contentTextField.text];
-            NSError * saveError = [self.selectedNote cdSave];
-            
-            if ( saveError == nil ){
-                noteIsNew = NO;
-                [self setMode:kDisplayModeNote];
-            } else {
-                [self showAlertWithTitle:NSLocalizedString(@"EDIT_NOTE_SAVEERROR_TITLE", nil) message:NSLocalizedString(@"EDIT_NOTE_SAVEERROR_TEXT", nil)];
-            }
-        }
+        [self saveNote];
+
     }
     else if ( sender == self.cancelEditButton ){
 
         /*
-            Si la note est nouvelle, et qu'on annule avant d'avoir enregistré,
-            il faut virer la note et virer le managedObject correspondant.
-            Le mode cascade du xcdatamodel est censé virer les cdShapes.
+         
+            If the note is new, and the user cancels before saving, we must
+            delete the note and its managedObject ( note.cdNote )
+            cascading model in xcdatamodel deletes note cdShapes.
+         
          */
         
         if ( noteIsNew ) {
             
-            // deleteNote s'occupera de faire le bon setMode
+            // deleteNote will set the right mode using setMode
             [self deleteNote:self.selectedNote];
             
         } else {
@@ -679,13 +717,14 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
             for ( OAShape * shape in self.selectedNote.shapes )
                 [shape.layer removeFromSuperlayer];
             [selectedNote revertToSaved];
+            noteIsModified = NO;
             titleTextField.text = self.selectedNote.title;
             contentTextField.text = self.selectedNote.content;
             [self setMode:kDisplayModeNote];
         }
     }
     else if ( sender == self.deleteEditButton ){
-        // deleteNote s'occupera de faire le bon setMode
+        // deleteNote will set the right mode using setMode
         [self deleteNote:self.selectedNote];
     };
 }
@@ -697,7 +736,7 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
         [note.thumbnailLayer removeFromSuperlayer];
     [self.notes removeObject:note];
     [noteStepperItem setEnabled:self.notes.count>1];
-    // selectNote va s'occuper de faire le bon setMode
+    // selectNote will set the right mode using setMode
     [self selectNote:nil];
     noteIsNew = NO;
 }
@@ -897,8 +936,8 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
         [self.pagesNavigationItem setStyle:UIBarButtonItemStyleDone];
         
         uint pageIndex = [self.pagesDataSource indexOfObject:self.page];
+        // PSTCollectionViewScrollPositionCenteredVertically does not want to center so I have to add 1 to index ...
         uint correctedPageIndex = MIN(pageIndex+1,pagesDataSource.count-1);
-        // PSTCollectionViewScrollPositionCenteredVertically ne veut pas centrer, donc je rajoute 1 à l'index ?! tssss
         [collectionView scrollToItemAtIndexPath:[NSIndexPath indexPathForRow:correctedPageIndex inSection:0] atScrollPosition:PSTCollectionViewScrollPositionCenteredVertically animated:NO];
         
     } else {
@@ -955,7 +994,7 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
         return;
     }
     
-    // pas de bouton "mes pages" pour ceux qui n'ont pas de pages.
+    // No "my pages" button for those with no pages.
     BOOL userHasPages = [[[[self wrapper] currentUser] notes] count];
     
     if ( userHasPages ){
@@ -1029,7 +1068,7 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
     [notes addObject:newNote];
     [newNote release];
     [noteStepperItem setEnabled:self.notes.count>1];
-    // selectNote va s'occuper de faire le bon setMode.
+    // selectNote will set the right mode using setMode.
     [self selectNote:newNote];
     
 };
@@ -1110,6 +1149,8 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
         [self setNotes:arr];
         [arr release];
         
+        noteIsModified = NO;
+        
         [self setSelectedNote:nil];
         
     };
@@ -1127,13 +1168,8 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
 - (void) viewWillDisappear:(BOOL)animated
 {
     if ([self.navigationController.viewControllers indexOfObject:self]==NSNotFound) {
-        // back button was pressed.  We know this is true because self is no longer
-        // in the navigation stack.
-        // http://stackoverflow.com/questions/1214965/setting-action-for-back-button-in-navigation-controller/3445994#3445994
-        
-        if ( self.selectedNote && noteIsNew )
-            [self deleteNote:self.selectedNote];
-        
+
+        // moved into onNBBackButtonClicked: selector.
     }
     [super viewWillDisappear:animated];
 }
@@ -1146,25 +1182,9 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
     CGFloat width = [self orientationIsLandscape] ? 1024.0f : 768.0f;
     CGFloat height = width == 1024.0f ? 768.0f : 1024.0f;
     CGRect pframe = panelView.frame;
-    //CGRect nframe = pageNavigationView.frame;
     
     pframe = CGRectSetX(pframe, -pframe.size.width);
     [panelView setFrame:pframe];
-    /*
-    CGRect eframe = CGRectMake(
-                               pframe.origin.x+pframe.size.width,
-                               nframe.origin.y+nframe.size.height,
-                               width,
-                               height);
-    
-    if ( editView )
-        [editView removeFromSuperview];
-    
-    OAScrollView * eView = [[OAScrollView alloc] initWithFrame:eframe editController:nil];
-    [self setEditView:eView];
-    [[self view] insertSubview:editView belowSubview:toolbarView];
-    [eView release];
-    */
     
     [shapeEditView setHidden:YES];
     [shapeEditView setAlpha:0.0f];
@@ -1231,9 +1251,53 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
     [cancelEditButton setHidden:YES];
     [deleteEditButton setHidden:YES];
     
+    [self.navigationItem setHidesBackButton:YES animated:NO];
+
+    UIButton * backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    backButton.frame = CGRectMake(0.0f, 0.0f, 96.0f, 32.0f);
+    [backButton setBackgroundImage:[UIImage imageNamed:@"nb_backbutton_96x32"] forState:UIControlStateNormal];
+    [backButton setBackgroundImage:[UIImage imageNamed:@"nb_backbutton_h_96x32"] forState:UIControlStateHighlighted];
+    [backButton addTarget:self action:@selector(onNBBackButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+    backButton.titleLabel.font = [UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]];
+    [backButton setTitle:NSLocalizedString(@"EDIT_NB_BACK",nil) forState:UIControlStateNormal];
+    [backButton setAdjustsImageWhenHighlighted:NO];
+    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    [backButton release];
+    
 }
 
-- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+- (void) onNBBackButtonClicked:(id)sender
+{
+    // back button was pressed.  We know this is true because self is no longer
+    // in the navigation stack.
+    // http://stackoverflow.com/questions/1214965/setting-action-for-back-button-in-navigation-controller/3445994#3445994
+    
+    // check if the textfields has been modified, adding to noteIsModifed.
+    if ( [self.selectedNote.title isEqualToString:titleTextField.text] == NO || [self.selectedNote.content isEqualToString:contentTextField.text] == NO ){
+        noteIsModified = YES;
+    }
+    
+    if ( self.selectedNote ) {
+        if ( noteIsNew || noteIsModified ){
+            
+            UIAlertView * alert = [[UIAlertView alloc]
+                                   initWithTitle: NSLocalizedString(@"EDIT_NOTE_BACKSAVE_TITLE", nil)
+                                   message: NSLocalizedString(@"EDIT_NOTE_BACKSAVE_TEXT", nil)
+                                   delegate: self
+                                   cancelButtonTitle:NSLocalizedString(@"EDIT_NOTE_BACKSAVE_CANCEL", nil)
+                                   otherButtonTitles:NSLocalizedString(@"EDIT_NOTE_BACKSAVE_DONT", nil),NSLocalizedString(@"EDIT_NOTE_BACKSAVE_SAVE", nil),nil];
+            [alert setTag:VIEWTAG_BACKALERT];
+            [alert show];
+            [alert release];
+        } else {
+            [self.navigationController popViewControllerAnimated:YES];
+        }
+    } else {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+}
+
+- (void) willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
 {
 }
 
@@ -1326,7 +1390,7 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
     }];
     [self setSelectedPageCell:cell];
     [cell displayLoading:YES];
-    // delay pour laisser le temps au spinner de se mettre en branle
+    // delay to let spinner wake up
     float delayInSeconds = 0.01;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){

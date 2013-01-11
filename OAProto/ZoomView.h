@@ -5,6 +5,7 @@
 //  Created by Ivan Touzeau on 04/11/12.
 //  Copyright (c) 2012 Ivan Touzeau. All rights reserved.
 //
+//  ZoomView is the little navigation view that appears in the top right corner of the edit view.
 
 #import <UIKit/UIKit.h>
 

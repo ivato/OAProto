@@ -81,7 +81,6 @@
     if ( USE_SHADOW ){
         self.layer.shadowPath = [UIBezierPath bezierPathWithRect:imageRect].CGPath;
     }
-    //self.textLayer.string = [NSString stringWithFormat:@"%@\n%@",page.name,notesString];
     [CATransaction commit];
     [(UILabel *)[self viewWithTag:123] setText:page.name];
     [(UILabel *)[self viewWithTag:143] setText:notesString];
@@ -96,11 +95,9 @@
         imageLayer.anchorPoint = CGPointZero;
         imageLayer.bounds = self.bounds;
         imageLayer.backgroundColor = [UIColor clearColor].CGColor;
-        //imageLayer.shouldRasterize = YES;
         [self.layer addSublayer:imageLayer];
         
 		UILabel * label = [[UILabel alloc] initWithFrame:CGRectMake(0, 220, CGRectGetWidth(self.bounds), 20)];
-		//[label setAutoresizingMask:UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin];
 		[label setTag:123];
         [label setFont:[UIFont boldSystemFontOfSize:14.0f]];
 		[label setTextColor:[UIColor whiteColor]];
@@ -109,7 +106,6 @@
         [label setNumberOfLines:1];
         [label setShadowColor:[UIColor colorWithWhite:0 alpha:0.5]];
         [label setShadowOffset:CGSizeMake(-1, -1)];
-        
         
 		UILabel * notesLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 240, CGRectGetWidth(self.bounds), 20)];
 		[notesLabel setTag:143];

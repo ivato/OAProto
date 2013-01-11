@@ -5,6 +5,8 @@
 //  Created by Ivan Touzeau on 07/11/12.
 //  Copyright (c) 2012 Ivan Touzeau. All rights reserved.
 //
+//  This class includes helpers to import, export data from users, and fill the local coredata on the first launch.
+//
 
 #import <Foundation/Foundation.h>
 

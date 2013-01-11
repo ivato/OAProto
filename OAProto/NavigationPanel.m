@@ -32,32 +32,13 @@
     return self;
 }
 
-- (id)initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
 - (void)layoutSubviews
 {
     [super layoutSubviews];
-    //_innerShadowLayer.frame = self.layer.bounds;
     _topShadow.bounds = CGRectMake(0, self.frame.size.height-SHADOW_HEIGHT, self.frame.size.width, SHADOW_HEIGHT);
     _topShadow.position = CGPointMake(0,0);
     _bottomShadow.bounds = CGRectMake(0, 0, self.frame.size.width, SHADOW_HEIGHT);
     _bottomShadow.position = CGPointMake(0,self.frame.size.height-SHADOW_HEIGHT+44.0f);
 }
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect
-{
-    // Drawing code
-}
-*/
 
 @end

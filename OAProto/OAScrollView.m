@@ -1,3 +1,10 @@
+//
+//  OAScrollView.m
+//  OAProto
+//
+//  Created by Ivan Touzeau on 15/10/12.
+//  Copyright (c) 2012 Ivan Touzeau. All rights reserved.
+//
 
 #import "OAScrollView.h"
 #import <QuartzCore/QuartzCore.h>
@@ -41,9 +48,6 @@
         We store these values at the touch time, so delayed touch action can process them.
      
      */
-    
-    //CGPoint                     currentTouchPoint;
-    //CGFloat                     invRatio;
     
     CALayer                   * hiLayer;
     
@@ -97,9 +101,6 @@
         [self setCurrentTouches:ct];
         [ct release];
 
-        //CGSize s = CGSizeApplyAffineTransform(self.editController.image.size, CGAffineTransformMakeScale(0.25, 0.25));
-        //UIImage * img = [self.editController.image resizedImage:s interpolationQuality:kCGInterpolationLow];
-        
         UIImageView * bgimg = [[UIImageView alloc] initWithImage:self.editController.resizedImage];
         bgimg.frame = CGRectMake(0,0,self.editController.image.size.width,self.editController.image.size.height);
         [self setImageView:bgimg];
@@ -155,7 +156,6 @@
     bool needsAlphaAnimation = (mode==kDisplayModeNotesThumbnails || previousMode==kDisplayModeNotesThumbnails) && mode!=previousMode;
     
     OAShape * selectedShape = [self.editController.selectedNote selectedShape];
-    //if ( displayMode != prevDisplayMode ){
     
     switch ( previousMode ) {
         case kDisplayModeNotesThumbnails:
@@ -190,7 +190,6 @@
         }
     };
     
-    //};
     [self.editController updateZoomView];
     
     [CATransaction commit];
@@ -281,7 +280,9 @@
             
             
         } else {
+            
             //NSLog(@"exec block annulée. %d",currentOperationId);
+            
         };
         
         if ( currentOperationId+1 == operationId ){
@@ -376,7 +377,7 @@
     CGFloat scaleRatio = 1/self.zoomScale;
     OAShape * shape = self.editController.selectedShape;
     if ( shape ){
-        // if a shape, we add a point, and we update UI.
+        // if a shape is selected, we add a point, and we update UI.
         selectedPointIndex = [shape addPoint:tPoint]-1;
         
         // Under 3 points a path cannot be closed since it is a line
@@ -390,7 +391,7 @@
         }];
         
     } else {
-        // no shape selected, we create one.
+        // no shape selected, we create one and set it as selected.
         OAShape * s = [[OAShape alloc] initWithType:kShapeTypePolygon element:CGPathElementCreate(kCGPathElementMoveToPoint,tPoint)];
         [self.editController.selectedNote addShape:s];
         [self.editController selectShape:s];
@@ -485,7 +486,35 @@
 
     }
     else if (mode == kDisplayModeEditMagicWand ){
+        
         [self.editController findShapeAt:tPoint];
+        
+    }
+    else if ( mode == kDisplayModeNote || mode == kDisplayModeNotesShapes ){
+        
+        // added 09 jan. 2013 on request : double tap a shape switches to edit mode and select touched shape.
+        if ( doubleTap ){
+            touchedShape = nil;
+            for ( OAShape * s in self.editController.selectedNote.shapes ){
+                if ( s.isClosed == NO ){
+                    if ( [s closestDistanceToPath:tPoint] < minDistance ) touchedShape = s;
+                } else {
+                    if ( CGPathContainsPoint(s.path, NULL, tPoint, true) ) {
+                        touchedShape = s;
+                    };
+                }
+            };
+            if ( touchedShape ){
+                [self.editController setMode:kDisplayModeEditNote];
+                [self.editController selectShape:touchedShape];
+                if ( touchedShape ){
+                    // we move the newly selected shape on top of shapes.
+                    [touchedShape.layer removeFromSuperlayer];
+                    [self.shapesLayer addSublayer:touchedShape.layer];
+                };
+            }
+        }
+        
     }
     else if ( mode == kDisplayModeEditNote ){
         
@@ -579,8 +608,10 @@
     OAShape * shape = [self.editController selectedShape];
     CGPoint tPoint = [currentTouch locationInView:self.imageView];
     
-    if ( mode==kDisplayModeEditPolygon && hasDelayedAction )
+    if ( mode == kDisplayModeEditPolygon && hasDelayedAction ){
+        [self.editController setNoteIsModified:YES];
         return;
+    }
     
     if ( mode == kDisplayModeEditFree ){
         if ( hasDelayedAction == NO && selectedPointIndex > -10 && currentTouches.count==1 ){
@@ -588,6 +619,7 @@
             bool longEnoughToClose = [shape pathPerimeter:50.0f] >= 50.0f;
             self.editController.shapeCloseButton.enabled = longEnoughToClose;
             self.editController.shapeEndButton.enabled = longEnoughToClose;
+            [self.editController setNoteIsModified:YES];
             [UIView animateWithDuration:0.25f animations:^{
                 self.editController.shapeCloseButton.alpha = self.editController.shapeCloseButton.enabled ? 1 : DISABLED_SHAPE_BUTTONS_ALPHA;
                 self.editController.shapeEndButton.alpha = self.editController.shapeEndButton.enabled ? 1 : DISABLED_SHAPE_BUTTONS_ALPHA;
@@ -595,12 +627,14 @@
         }
     }
     else if ( mode == kDisplayModeEditPolygon ){
-        if ( hasDelayedAction == NO && selectedPointIndex > -10 && currentTouches.count==1 )
+        if ( hasDelayedAction == NO && selectedPointIndex > -10 && currentTouches.count==1 ){
+            [self.editController setNoteIsModified:YES];
             [shape setPoint:tPoint at:selectedPointIndex];
-        
+        }
     }
     else if ( mode == kDisplayModeEditNote ){
         
+        [self.editController setNoteIsModified:YES];
         if ( shape && [touches containsObject:self.currentTouch]) {
             // If we have a shape selected, and if the "editing finger" has moved ...
             
@@ -646,12 +680,13 @@
                 hasDelayedAction = NO;
             }
             /*
-             self.editController.shapeCloseButton.enabled = NO;
+            self.editController.shapeCloseButton.enabled = NO;
             self.editController.shapeEndButton.enabled = NO;
             [UIView animateWithDuration:0.25f animations:^{
                 self.editController.shapeCloseButton.alpha = DISABLED_SHAPE_BUTTONS_ALPHA;
                 self.editController.shapeEndButton.alpha = DISABLED_SHAPE_BUTTONS_ALPHA;
-            }];*/
+            }];
+             */
         }
         [self.editController updateZoomComposite];
         [self setCurrentTouch:nil];

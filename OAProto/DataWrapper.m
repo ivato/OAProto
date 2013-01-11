@@ -338,16 +338,16 @@
 
 - (void) testDatabase
 {
+    //
 }
 
 - (void) logDatabase
 {
+    //
 }
 
 - (BOOL) initDatabase
 {
-    
-    //[self logDatabase];
     
     NSArray * users = [self entitiesForName:@"User" sortedWith:@"email"];
     if ( users.count > 0 ){

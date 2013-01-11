@@ -90,7 +90,6 @@
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             NSAutoreleasePool * pool = [[NSAutoreleasePool alloc] init];
 #endif
-            //UIImage * zoomedImage = [aController.resizedImage resizedImage:size interpolationQuality:kCGInterpolationLow];
             UIGraphicsBeginImageContextWithOptions(size, NO, 0.0);
             [aController.resizedImage drawInRect:CGRectMake(0, 0, size.width, size.height)];
             UIImage * zoomedImage = UIGraphicsGetImageFromCurrentImageContext();
@@ -166,15 +165,5 @@
 {
     zoomLayer.bounds = rect;
 }
-
-- (id) initWithFrame:(CGRect)frame
-{
-    self = [super initWithFrame:frame];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
 
 @end

@@ -5,6 +5,7 @@
 //  Created by Ivan Touzeau on 27/10/12.
 //  Copyright (c) 2012 Ivan Touzeau. All rights reserved.
 //
+//  UserViewController handles the user list ( upper left button on home screen )
 
 #import <UIKit/UIKit.h>
 

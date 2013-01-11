@@ -23,11 +23,6 @@
 
 @synthesize panelsController, navController, wrapper;
 
-- (void) testMe:(Page *)page
-{   
-
-}
-
 - (void)dealloc
 {
     [wrapper release];

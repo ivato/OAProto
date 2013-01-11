@@ -31,6 +31,12 @@
  
  */
 
+"EDIT_NOTE_BACKSAVE_TITLE" = "Note has not been saved";
+"EDIT_NOTE_BACKSAVE_TEXT" = "Do you want to save this note before quitting ? Changes will be lost if you don't save now.";
+"EDIT_NOTE_BACKSAVE_SAVE" = "Save";
+"EDIT_NOTE_BACKSAVE_DONT" = "Do not save";
+"EDIT_NOTE_BACKSAVE_CANCEL" = "Cancel";
+
 "EDIT_NOTE_SAVEERROR_TITLE" = "Error";
 "EDIT_NOTE_SAVEERROR_TEXT" = "Unable to save.";
 
@@ -45,6 +51,7 @@
 "EDIT_NB_ADDTOMYPAGES" = "Add to my pages";
 "EDIT_NB_PAGES" = "Pages";
 "EDIT_NB_ZOOM" = "Zoom view";
+"EDIT_NB_BACK" = "Home";
 
 "EDIT_TB_SHOWTOOLS" = "Show note";
 "EDIT_TB_HIDETOOLS" = "Hide note";

@@ -5,6 +5,9 @@
 //  Created by Ivan Touzeau on 18/10/12.
 //  Copyright (c) 2012 Ivan Touzeau. All rights reserved.
 //
+//  This class represents one annotation.
+//  Shapes array stores the shapes of this annotation.
+//  cdDelete, cdSave, cdNote are CoreData related APIs.
 
 #import <Foundation/Foundation.h>
 

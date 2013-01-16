@@ -223,7 +223,9 @@
 - (uint) addShape:(OAShape *)aShape
 {
     if ( shapes == nil){
-        [self setShapes:[[NSMutableArray alloc] init]];
+        NSMutableArray * s = [[NSMutableArray alloc] init];
+        [self setShapes:s];
+        [s release];
     };
     [shapes addObject:aShape];
     [aShape setNote:self];

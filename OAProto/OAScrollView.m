@@ -376,6 +376,7 @@
     CGPoint tPoint = [currentTouch locationInView:self.imageView];
     CGFloat scaleRatio = 1/self.zoomScale;
     OAShape * shape = self.editController.selectedShape;
+    
     if ( shape ){
         // if a shape is selected, we add a point, and we update UI.
         selectedPointIndex = [shape addPoint:tPoint]-1;
@@ -415,6 +416,7 @@
     
     DisplayMode mode = self.editController.mode;
     OAShape * shape = [self.editController selectedShape];
+    BOOL moveMode = ( mode==kDisplayModeEditFree || mode==kDisplayModeEditPolygon ) && self.editController.handToolSelected;
     
     if ( currentTouches.count > 1){
         // if on multitouch, cancel delayed actions and ignore the rest.
@@ -470,14 +472,14 @@
         selectedPointIndex = 2;
         
     }
-    else if (mode == kDisplayModeEditFree ){
+    else if (mode == kDisplayModeEditFree && !moveMode ){
         
         hasDelayedAction = YES;
         self.scrollEnabled = NO;
         [self performSelector:@selector(delayedActionEditFree:) withObject:nil afterDelay:MULTITOUCH_DELAY];
         return;
     }
-    else if (mode == kDisplayModeEditPolygon ){
+    else if (mode == kDisplayModeEditPolygon && !moveMode ){
         
         hasDelayedAction = YES;
         self.scrollEnabled = NO;
@@ -592,6 +594,7 @@
     /*
         scroll is enabled if
         - currenttouches > 1
+        - handToolSelected is on and editing in free/polygon mode
         - we don't have a selected shape.
         - or we have a selected shape but no touched shape and no selectedPoint.
      
@@ -599,7 +602,7 @@
      
      */
     
-    self.scrollEnabled = touches.count>1 ? YES : selectedPointIndex>-10 ? NO : self.editController.mode == kDisplayModeEditFree ? NO : !(shape!=nil && (touchedShape==shape || selectedPointIndex!=-10));
+    self.scrollEnabled = (touches.count>1 || moveMode) ? YES : selectedPointIndex>-10 ? NO : mode == kDisplayModeEditFree ? NO : !(shape!=nil && (touchedShape==shape || selectedPointIndex!=-10));
 };
 
 - (void) touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event
@@ -607,13 +610,14 @@
     DisplayMode mode = self.editController.mode;
     OAShape * shape = [self.editController selectedShape];
     CGPoint tPoint = [currentTouch locationInView:self.imageView];
+    BOOL moveMode = ( mode==kDisplayModeEditFree || mode==kDisplayModeEditPolygon ) && self.editController.handToolSelected;
     
-    if ( mode == kDisplayModeEditPolygon && hasDelayedAction ){
+    if ( mode == kDisplayModeEditPolygon && hasDelayedAction && !moveMode ){
         [self.editController setNoteIsModified:YES];
         return;
     }
     
-    if ( mode == kDisplayModeEditFree ){
+    if ( mode == kDisplayModeEditFree && !moveMode ){
         if ( hasDelayedAction == NO && selectedPointIndex > -10 && currentTouches.count==1 ){
             [shape addPoint:tPoint];
             bool longEnoughToClose = [shape pathPerimeter:50.0f] >= 50.0f;
@@ -626,7 +630,7 @@
             }];
         }
     }
-    else if ( mode == kDisplayModeEditPolygon ){
+    else if ( mode == kDisplayModeEditPolygon && !moveMode ){
         if ( hasDelayedAction == NO && selectedPointIndex > -10 && currentTouches.count==1 ){
             [self.editController setNoteIsModified:YES];
             [shape setPoint:tPoint at:selectedPointIndex];

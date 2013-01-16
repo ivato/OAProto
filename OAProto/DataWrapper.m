@@ -361,7 +361,7 @@
     }
     
     [self createUser];
-        
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
 
@@ -373,11 +373,13 @@
             NSArray * lines = [pageFileContent componentsSeparatedByCharactersInSet:[NSCharacterSet newlineCharacterSet]];
             Book * book = nil;
             for ( NSString * line in lines ){
-                NSArray * components = [line componentsSeparatedByString:@"|"];
-                if ( components.count > 1){
-                    NSString * prefix = [components objectAtIndex:0];
-                    if ( [prefix isEqualToString:@"#"] == NO ){
-                        
+                
+                // ignore lines with no chars and lines starting with a #
+                if ( [line length] > 1 && [line characterAtIndex:0] != 35 ){
+                    
+                    NSArray * components = [line componentsSeparatedByString:@"|"];
+                    if ( components.count > 1){
+                        NSString * prefix = [components objectAtIndex:0];
                         if ( [prefix isEqualToString:@"book"] ){
                             book = [self entityForName:@"Book"];
                             book.city = [components objectAtIndex:1];

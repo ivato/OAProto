@@ -50,6 +50,9 @@
                                               // will be switched to NO upon save or cancel.
     BOOL                                      noteIsModified;
     
+    BOOL                                      handToolSelected;
+    
+    
     DisplayMode                               mode;
     DisplayMode                               previousMode;
     
@@ -61,6 +64,7 @@
     IBOutlet UIButton                       * shapePolyButton;
     IBOutlet UIButton                       * shapeEndButton;
     IBOutlet UIButton                       * shapeCloseButton;
+    IBOutlet UIButton                       * shapeMoveImageButton;
     IBOutlet UIButton                       * shapeDeleteButton;
     IBOutlet UIButton                       * shapeMWButton;
     
@@ -128,6 +132,7 @@
 @property (nonatomic,retain) IBOutlet   UIButton                        * shapePolyButton;
 @property (nonatomic,retain) IBOutlet   UIButton                        * shapeEndButton;
 @property (nonatomic,retain) IBOutlet   UIButton                        * shapeCloseButton;
+@property (nonatomic,retain) IBOutlet   UIButton                        * shapeMoveImageButton;
 @property (nonatomic,retain) IBOutlet   UIButton                        * shapeDeleteButton;
 @property (nonatomic,retain) IBOutlet   UIButton                        * shapeMWButton;
 
@@ -171,5 +176,7 @@
 @property (nonatomic,assign)            DisplayMode                       previousMode;
 
 @property (nonatomic,assign)            BOOL                              noteIsModified;
+@property (nonatomic,assign)            BOOL                              handToolSelected;
+
 
 @end

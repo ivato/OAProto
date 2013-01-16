@@ -5,6 +5,7 @@
 //  Created by Ivan Touzeau on 09/11/12.
 //  Copyright (c) 2012 Ivan Touzeau. All rights reserved.
 //
+// FolderViewController mimics the folder view that pops from the background on the device home screen
 
 #import <UIKit/UIKit.h>
 #import "PSTCollectionView.h"

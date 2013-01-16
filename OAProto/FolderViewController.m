@@ -7,7 +7,6 @@
 //
 
 #import "FolderViewController.h"
-#import "UIOpaqueView.h"
 #import "DataWrapper.h"
 
 #import "PSTCollectionView.h"
@@ -133,8 +132,8 @@ static NSString * footerViewIdentifier      = @"Test Footer View";
         UIImage * image = UIGraphicsGetImageFromCurrentImageContext();
         UIGraphicsEndImageContext();
         
-        //frame.origin.y = 0.0;
-        UIOpaqueView * v = [[UIOpaqueView alloc] initWithFrame:frame];
+        UIView * v = [[UIView alloc] initWithFrame:frame];
+        [v setOpaque:YES];
         [self setView:v];
         [v release];
         
@@ -149,7 +148,6 @@ static NSString * footerViewIdentifier      = @"Test Footer View";
         [flowLayout setFooterReferenceSize:CGSizeZero];
         [flowLayout setMinimumInteritemSpacing:20];
         [flowLayout setMinimumLineSpacing:20];
-        //[self.flowLayout setSectionInset:UIEdgeInsetsMake( 50, 10, 5, 10)];
         [flowLayout setSectionInset:UIEdgeInsetsMake( 0, 10, 0, 10)];
         
         PSTCollectionView * cv = [[PSTCollectionView alloc] initWithFrame:CGRectMake( 0, startYPosition+ARROW_HEIGHT, frame.size.width,height) collectionViewLayout:flowLayout];
@@ -316,7 +314,7 @@ static NSString * footerViewIdentifier      = @"Test Footer View";
     [super viewDidAppear:animated];
     
     [delegate onFoldedViewWillOpen:self.contentView];
-    open = YES;
+    open = NO;
     [CATransaction begin];
     [CATransaction setAnimationDuration:ANIMATION_DURATION];
     [CATransaction setAnimationTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut]];
@@ -339,6 +337,7 @@ static NSString * footerViewIdentifier      = @"Test Footer View";
                          self.contentView.frame = contentFrame;
                      }
                      completion:^(BOOL finished){
+                         open = YES;
                      }
      ];
     
@@ -463,9 +462,6 @@ static NSString * footerViewIdentifier      = @"Test Footer View";
 		identifier = footerViewIdentifier;
 	}
     PSTCollectionReusableView * supplementaryView = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:identifier forIndexPath:indexPath];
-	
-    // TODO Setup view
-	
     return supplementaryView;
 }
 

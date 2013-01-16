@@ -35,7 +35,7 @@
 
 @interface EditViewController ()
 {
-                              // pour test comparaison memory usage
+                              // for memory usage comparison
     BOOL                      autoClosePagesOnPageSelect;
     
     BOOL                      noteIsNew;
@@ -71,7 +71,7 @@
 @synthesize previousMode,mode;
 
 @synthesize notesPopoverController,pagesDataSource,selectedPageCell,actionSheet, pagesNavigationItem;
-@synthesize shapeRectButton,shapeEllipseButton,shapeFreeButton,shapePolyButton,shapeEndButton,shapeCloseButton,shapeDeleteButton,shapeMWButton;
+@synthesize shapeRectButton,shapeEllipseButton,shapeFreeButton,shapePolyButton,shapeEndButton,shapeCloseButton,shapeMoveImageButton,shapeDeleteButton,shapeMWButton;
 @synthesize mwToleranceLabel,mwToleranceSlider,mwActivityIndicator;
 @synthesize hiresActivityIndicator,hiresActivityItem;
 
@@ -87,7 +87,7 @@
 
 @synthesize image,notes,selectedNote,page;
 
-@synthesize noteIsModified;
+@synthesize noteIsModified,handToolSelected;
 
 static NSString * cellIdentifier            = @"Page Cell";
 
@@ -162,6 +162,8 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
             self.shapeEndButton.hidden = newMode != kDisplayModeEditFree && newMode != kDisplayModeEditPolygon;
             self.shapeEndButton.enabled = NO;
             self.shapeEndButton.alpha = DISABLED_SHAPE_BUTTONS_ALPHA;
+            
+            self.shapeMoveImageButton.hidden = newMode != kDisplayModeEditFree && newMode != kDisplayModeEditPolygon;
             
             self.mwToleranceLabel.hidden = self.mwToleranceSlider.hidden = (newMode!=kDisplayModeEditMagicWand);
             
@@ -430,8 +432,20 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
 {
     //uint tag = [(UIView*)sender tag];
     DisplayMode nextMode = kDisplayModeUnknown;
-    if ( sender == shapeCloseButton ){
-        if ( self->mode == kDisplayModeEditPolygon || self->mode == kDisplayModeEditFree ){
+    if ( sender == shapeMoveImageButton ){
+        if ( mode == kDisplayModeEditPolygon || mode == kDisplayModeEditFree ){
+            handToolSelected = !handToolSelected;
+            if ( handToolSelected ){
+                [self performSelector:@selector(doHighlight:) withObject:sender afterDelay:0];
+            } else {
+                [shapeMoveImageButton setHighlighted:NO];
+            };
+        }
+        // exit now to avoid setMode. 
+        return;
+    }
+    else if ( sender == shapeCloseButton ){
+        if ( mode == kDisplayModeEditPolygon || mode == kDisplayModeEditFree ){
             [selectedNote.selectedShape closePath];
             [self selectShape:nil];
             nextMode = kDisplayModeEditNote;
@@ -440,11 +454,6 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
     else if ( sender == shapeDeleteButton ){
         OAShape * shapeToDelete = selectedNote.selectedShape;
         if ( shapeToDelete ){
-            /*if ( selectedNote.shapes.count-1 ){
-                [self selectShape:[self.selectedNote closestShapeToShape:shapeToDelete]];
-            } else {
-                [self selectShape:nil];
-            }*/
             [self selectShape:nil];
             [selectedNote removeShape:shapeToDelete];
             [editView updateLayers];
@@ -1117,6 +1126,7 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
         [panelScrollView setScrollEnabled:NO];
         
         autoClosePagesOnPageSelect = YES;
+        handToolSelected = NO;
         
         UIActivityIndicatorView * hraiv = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
         [self setHiresActivityIndicator:hraiv];
@@ -1245,6 +1255,7 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
     [shapePolyButton setImage:[UIImage imageNamed:@"oa_shape_poly_h_35x31"] forState:UIControlStateHighlighted];
     [shapeFreeButton setImage:[UIImage imageNamed:@"oa_shape_free_h_35x31"] forState:UIControlStateHighlighted];
     [shapeMWButton setImage:[UIImage imageNamed:@"oa_shape_wand_h_35x31"] forState:UIControlStateHighlighted];
+    [shapeMoveImageButton setImage:[UIImage imageNamed:@"oa_shape_move_h_35x31"] forState:UIControlStateHighlighted];
     
     [editButton setHidden:YES];
     [saveEditButton setHidden:YES];
@@ -1261,8 +1272,7 @@ static NSString * NSStringFromDisplayMode(DisplayMode m)
     backButton.titleLabel.font = [UIFont boldSystemFontOfSize:[UIFont smallSystemFontSize]];
     [backButton setTitle:NSLocalizedString(@"EDIT_NB_BACK",nil) forState:UIControlStateNormal];
     [backButton setAdjustsImageWhenHighlighted:NO];
-    self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:backButton];
-    [backButton release];
+    self.navigationItem.leftBarButtonItem = [[[UIBarButtonItem alloc] initWithCustomView:backButton] autorelease];
     
 }
 

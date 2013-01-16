@@ -4649,13 +4649,37 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 										<reference key="IBUIFontDescription" ref="835798508"/>
 										<reference key="IBUIFont" ref="837806572"/>
 									</object>
+									<object class="IBUIButton" id="517442509">
+										<reference key="NSNextResponder" ref="850666683"/>
+										<int key="NSvFlags">292</int>
+										<string key="NSFrame">{{196, 196}, {35, 31}}</string>
+										<reference key="NSSuperview" ref="850666683"/>
+										<reference key="NSWindow"/>
+										<reference key="NSNextKeyView" ref="836778938"/>
+										<string key="NSReuseIdentifierKey">_NS:9</string>
+										<bool key="IBUIOpaque">NO</bool>
+										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
+										<int key="IBUIContentHorizontalAlignment">0</int>
+										<int key="IBUIContentVerticalAlignment">0</int>
+										<reference key="IBUIHighlightedTitleColor" ref="226084634"/>
+										<object class="NSColor" key="IBUINormalTitleColor">
+											<int key="NSColorSpace">1</int>
+											<bytes key="NSRGB">MC4xOTYwNzg0MzQ2IDAuMzA5ODAzOTMyOSAwLjUyMTU2ODY1NgA</bytes>
+										</object>
+										<object class="NSCustomResource" key="IBUINormalBackgroundImage">
+											<string key="NSClassName">NSImage</string>
+											<string key="NSResourceName">oa_shape_move_35x31.png</string>
+										</object>
+										<reference key="IBUIFontDescription" ref="835798508"/>
+										<reference key="IBUIFont" ref="837806572"/>
+									</object>
 									<object class="IBUIButton" id="739731675">
 										<reference key="NSNextResponder" ref="850666683"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{0, 176}, {115, 31}}</string>
+										<string key="NSFrame">{{0, 196}, {90, 31}}</string>
 										<reference key="NSSuperview" ref="850666683"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="59787195"/>
+										<reference key="NSNextKeyView" ref="58699310"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -4665,9 +4689,9 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 										<string key="IBUINormalTitle">End path</string>
 										<reference key="IBUIHighlightedTitleColor" ref="226084634"/>
 										<reference key="IBUINormalTitleColor" ref="226084634"/>
-										<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="483588171">
+										<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="294550722">
 											<string key="NSClassName">NSImage</string>
-											<string key="NSResourceName">oa_button_bg_115x31.png</string>
+											<string key="NSResourceName">oa_button_bg_90x31.png</string>
 										</object>
 										<reference key="IBUIFontDescription" ref="835798508"/>
 										<reference key="IBUIFont" ref="837806572"/>
@@ -4722,10 +4746,10 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 									<object class="IBUIButton" id="59787195">
 										<reference key="NSNextResponder" ref="850666683"/>
 										<int key="NSvFlags">292</int>
-										<string key="NSFrame">{{125, 176}, {115, 31}}</string>
+										<string key="NSFrame">{{98, 196}, {90, 31}}</string>
 										<reference key="NSSuperview" ref="850666683"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="58699310"/>
+										<reference key="NSNextKeyView" ref="517442509"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<string key="targetRuntimeIdentifier">IBIPadFramework</string>
@@ -4735,7 +4759,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 										<string key="IBUINormalTitle">Close path</string>
 										<reference key="IBUIHighlightedTitleColor" ref="226084634"/>
 										<reference key="IBUINormalTitleColor" ref="226084634"/>
-										<reference key="IBUINormalBackgroundImage" ref="483588171"/>
+										<reference key="IBUINormalBackgroundImage" ref="294550722"/>
 										<reference key="IBUIFontDescription" ref="835798508"/>
 										<reference key="IBUIFont" ref="837806572"/>
 									</object>
@@ -4792,7 +4816,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 										<string key="NSFrame">{{0, 217}, {20, 20}}</string>
 										<reference key="NSSuperview" ref="850666683"/>
 										<reference key="NSWindow"/>
-										<reference key="NSNextKeyView" ref="836778938"/>
+										<reference key="NSNextKeyView" ref="59787195"/>
 										<string key="NSReuseIdentifierKey">_NS:9</string>
 										<bool key="IBUIOpaque">NO</bool>
 										<bool key="IBUIUserInteractionEnabled">NO</bool>
@@ -4949,10 +4973,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 							<int key="NSColorSpace">3</int>
 							<bytes key="NSWhite">MC41AA</bytes>
 						</object>
-						<object class="NSCustomResource" key="IBUINormalBackgroundImage" id="628134895">
-							<string key="NSClassName">NSImage</string>
-							<string key="NSResourceName">oa_button_bg_90x31.png</string>
-						</object>
+						<reference key="IBUINormalBackgroundImage" ref="294550722"/>
 						<reference key="IBUIFontDescription" ref="835798508"/>
 						<reference key="IBUIFont" ref="837806572"/>
 					</object>
@@ -4995,7 +5016,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<reference key="IBUIHighlightedTitleColor" ref="226084634"/>
 						<reference key="IBUINormalTitleColor" ref="226084634"/>
 						<reference key="IBUINormalTitleShadowColor" ref="1025698793"/>
-						<reference key="IBUINormalBackgroundImage" ref="628134895"/>
+						<reference key="IBUINormalBackgroundImage" ref="294550722"/>
 						<reference key="IBUIFontDescription" ref="835798508"/>
 						<reference key="IBUIFont" ref="837806572"/>
 					</object>
@@ -5331,6 +5352,14 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					<int key="connectionID">227</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchOutletConnection" key="connection">
+						<string key="label">shapeMoveImageButton</string>
+						<reference key="source" ref="841351856"/>
+						<reference key="destination" ref="517442509"/>
+					</object>
+					<int key="connectionID">232</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBCocoaTouchEventConnection" key="connection">
 						<string key="label">onTBShapeToolsButtonClicked:</string>
 						<reference key="source" ref="1068475827"/>
@@ -5470,6 +5499,15 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 					</object>
 					<int key="connectionID">228</int>
 				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBCocoaTouchEventConnection" key="connection">
+						<string key="label">onShapeButtonClicked:</string>
+						<reference key="source" ref="517442509"/>
+						<reference key="destination" ref="841351856"/>
+						<int key="IBEventType">7</int>
+					</object>
+					<int key="connectionID">231</int>
+				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
 				<array key="orderedObjects">
@@ -5582,10 +5620,11 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 							<reference ref="739731675"/>
 							<reference ref="1065215449"/>
 							<reference ref="365181884"/>
-							<reference ref="59787195"/>
 							<reference ref="473733933"/>
 							<reference ref="780444803"/>
 							<reference ref="58699310"/>
+							<reference ref="59787195"/>
+							<reference ref="517442509"/>
 						</array>
 						<reference key="parent" ref="742822250"/>
 					</object>
@@ -5699,6 +5738,11 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<reference key="object" ref="936400753"/>
 						<reference key="parent" ref="850666683"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">230</int>
+						<reference key="object" ref="517442509"/>
+						<reference key="parent" ref="850666683"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -5732,6 +5776,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 				<string key="217.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="224.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="229.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
+				<string key="230.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="26.CustomClassName">NavigationPanel</string>
 				<string key="26.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
 				<string key="59.IBPluginDependency">com.apple.InterfaceBuilder.IBCocoaTouchPlugin</string>
@@ -5748,13 +5793,27 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">229</int>
+			<int key="maxID">232</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
 				<object class="IBPartialClassDescription">
 					<string key="className">EditViewController</string>
 					<string key="superclassName">UIViewController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="onTBDeleteNoteButtonClicked:">id</string>
+						<string key="onTBThumbnailsButtonClicked:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="onTBDeleteNoteButtonClicked:">
+							<string key="name">onTBDeleteNoteButtonClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="onTBThumbnailsButtonClicked:">
+							<string key="name">onTBThumbnailsButtonClicked:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
 					<dictionary class="NSMutableDictionary" key="outlets">
 						<string key="addNoteItem">UIBarButtonItem</string>
 						<string key="annotationNavigationView">UIView</string>
@@ -5782,6 +5841,7 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 						<string key="shapeEndButton">UIButton</string>
 						<string key="shapeFreeButton">UIButton</string>
 						<string key="shapeMWButton">UIButton</string>
+						<string key="shapeMoveImageButton">UIButton</string>
 						<string key="shapePolyButton">UIButton</string>
 						<string key="shapeRectButton">UIButton</string>
 						<string key="testButton">UIButton</string>
@@ -5894,6 +5954,10 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 							<string key="name">shapeMWButton</string>
 							<string key="candidateClassName">UIButton</string>
 						</object>
+						<object class="IBToOneOutletInfo" key="shapeMoveImageButton">
+							<string key="name">shapeMoveImageButton</string>
+							<string key="candidateClassName">UIButton</string>
+						</object>
 						<object class="IBToOneOutletInfo" key="shapePolyButton">
 							<string key="name">shapePolyButton</string>
 							<string key="candidateClassName">UIButton</string>
@@ -5940,12 +6004,12 @@ AAgAAAAIAAIACAACAAAAAgAAAAEAAQABAAE</bytes>
 		<int key="IBDocument.defaultPropertyAccessControl">3</int>
 		<dictionary class="NSMutableDictionary" key="IBDocument.LastKnownImageSizes">
 			<string key="oa_arrow_left_11x11.png">{11, 11}</string>
-			<string key="oa_button_bg_115x31.png">{115, 31}</string>
 			<string key="oa_button_bg_60x31.png">{60, 31}</string>
 			<string key="oa_button_bg_90x31.png">{90, 31}</string>
 			<string key="oa_shape_delete_35x31.png">{35, 31}</string>
 			<string key="oa_shape_ellipse_35x31.png">{35, 31}</string>
 			<string key="oa_shape_free_35x31.png">{35, 31}</string>
+			<string key="oa_shape_move_35x31.png">{35, 31}</string>
 			<string key="oa_shape_poly_35x31.png">{35, 31}</string>
 			<string key="oa_shape_rect_35x31.png">{35, 31}</string>
 			<string key="oa_shape_wand_35x31.png">{35, 31}</string>

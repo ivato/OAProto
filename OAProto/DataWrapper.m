@@ -42,147 +42,166 @@
     [xml writeEndElement];
 }
 
+- (void) NSLogElement:(CGPathElement *)elements at:(int)index
+{
+    NSLog( @"%d %@",index,NSStringFromCGPoint(elements[index].points[0]) );
+}
+
 - (NSData *) xmlDataForUser:(User *)user
 {
     
     NSArray * userPages = [[self pagesWithNotesForUser:self.currentUser] sortedArrayUsingComparator:^NSComparisonResult(id a, id b) {
         return [[(Page *)a book].name compare:[(Page *)b book].name];
     }];
-
     
     NSDateFormatter * dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
+    [dateFormatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
     NSString * svgStyleClose = @"fill:red;stroke:none;opacity:0.2";
     NSString * svgStyleOpen = @"fill:none;stroke:black;stroke-width:1";
     
     XMLWriter * xml = [[XMLWriter alloc] init];
     [xml writeStartDocument];
     [xml writeStartElement:@"rdf:RDF"];
-    
     [xml writeAttribute:@"xmlns:rdf" value:@"http://www.w3.org/1999/02/22-rdf-syntax-ns#"];
     [xml writeAttribute:@"xmlns:foaf" value:@"http://xmlns.com/foaf/0.1/"];
     [xml writeAttribute:@"xmlns:oac" value:@"http://www.openannotation.org/ns/"];
     [xml writeAttribute:@"xmlns:dc" value:@"http://purl.org/dc/elements/1.1/"];
     [xml writeAttribute:@"xmlns:dcterms" value:@"http://purl.org/dc/terms/"];
-    [xml writeAttribute:@"xmlns:cnt" value:@"http://www.w3.org/2008/content"];
+    [xml writeAttribute:@"xmlns:cnt" value:@"http://www.w3.org/2011/content#"];
     [xml writeAttribute:@"xmlns:sc" value:@"http://www.shared-canvas.org/ns/"];
+    [xml writeAttribute:@"xmlns:exif" value:@"http://www.w3.org/2003/12/exif/ns#"];
+    [xml writeAttribute:@"xmlns:rdfs" value:@"http://www.w3.org/2000/01/rdf-schema#"];
+    [xml writeAttribute:@"xmlns:oa" value:@"http://www.w3.org/ns/openannotation/core/"];
     
     for ( Page * page in userPages ){
         for ( Note * note in page.notes ){
-            [xml writeStartElement:@"oac:Annotation"];
-            [xml writeAttribute:@"rdf:about" value:@"http://www.somedomain.com/contentofthisfile.xml"];
-            [self appendElement:@"oac:hasTarget" withContent:page.file forXML:xml];
-            [xml writeStartElement:@"dc:title"];
-            [xml writeAttribute:@"xml:lang" value:@"to_be_defined"];
-            [xml writeCData:note.title];
-            [xml writeEndElement];
-            [xml writeStartElement:@"oac:hasBody"];
-            [xml writeCData:note.content];
-            [xml writeEndElement];
+            [xml writeStartElement:@"oa:Annotation"];
+            [xml writeAttribute:@"rdf:about" value:@"url:uuid:UUID"];
+            
+            [xml writeStartElement:@"oa:hasTarget"];
+            
+            [xml writeStartElement:@"oa:SpecificRessource"];
+            [xml writeAttribute:@"rdf:about" value:@"urn:uuid:UUID"];
+            
+            [xml writeStartElement:@"oa:hasSource"];
             
             UIImage * pageImage = [DataWrapper imageForPage:page];
+            
             [xml writeStartElement:@"sc:Canvas"];
-            [self appendElement:@"exif:width" withContent:[NSString stringWithFormat:@"%d",(uint)pageImage.size.width] forXML:xml];
-            [self appendElement:@"exif:height" withContent:[NSString stringWithFormat:@"%d",(uint)pageImage.size.height] forXML:xml];
-            [xml writeStartElement:@"rdfs:label"];
-            [xml writeCData:[NSString stringWithFormat:@"%@,%@,%@",page.book.city,page.book.source,page.file]];
+            [xml writeAttribute:@"rdf:about" value:@"urn:uuid:5ab19cce-7e65-4618-8ae7-4b12e3f62c7d"];
+            [self appendElement:@"rdfs:label" withContent:[NSString stringWithFormat:@"%@,%@,%@",page.book.city,page.book.source,page.file] forXML:xml];
+            [xml writeStartElement:@"exif:width"];
+            [xml writeAttribute:@"rdf:datatype" value:@"http://www.w3.org/2001/XMLSchema#integer"];
+            [xml writeCharacters:[NSString stringWithFormat:@"%d",(uint)pageImage.size.width]];
+            [xml writeEndElement];
+            [xml writeStartElement:@"exif:height"];
+            [xml writeAttribute:@"rdf:datatype" value:@"http://www.w3.org/2001/XMLSchema#integer"];
+            [xml writeCharacters:[NSString stringWithFormat:@"%d",(uint)pageImage.size.height]];
             [xml writeEndElement];
             [xml writeEndElement];
             
-            [xml writeStartElement:@"oac:SvgConstraint"];
+            [xml writeStartElement:@"oa:hasSelector"];
+            [xml writeStartElement:@"oa:SvgSelector"];
+            [xml writeAttribute:@"rdf:about" value:@"urn:uuid:f4ceb5d8-f7f1-43e7-9002-faeff479ab0e"];
             [self appendElement:@"dc:format" withContent:@"image/svg+xml" forXML:xml];
-            [self appendElement:@"cnt:characterEncoding" withContent:@"utf-8" forXML:xml];
             [xml writeStartElement:@"cnt:chars"];
-            [xml writeStartElement:@"svg"];
-            [xml writeAttribute:@"xmlns" value:@"http://www.w3.org/2000/svg"];
-            [xml writeAttribute:@"version" value:@"1.1"];
+            
+            NSMutableString * str = [[NSMutableString alloc] init];
+            [str appendString:@"<svg xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\">"];
             
             for ( Shape * shape in note.shapes){
-                
                 uint shapeType = shape.type.intValue;
-                
                 CGPathElement * elements = NULL;
                 uint len = CGPathElementMakeFromNSData(shape.path, &elements);
                 bool shapeClosed = elements[len-1].type == kCGPathElementCloseSubpath;
                 
                 if ( shapeType == kShapeTypeRectangle){
-                    int rectWidth = (abs)((int)elements[0].points[1].x - elements[0].points[0].x);
-                    int rectHeight = (abs)((int)elements[0].points[1].y - elements[0].points[0].y);
-                    [xml writeStartElement:@"rect"];
-                    [xml writeAttribute:@"x" value:[NSString stringWithFormat:@"%i",(abs)((int)elements[0].points[1].x)]];
-                    [xml writeAttribute:@"y" value:[NSString stringWithFormat:@"%i",(abs)((int)elements[0].points[1].y)]];
-                    [xml writeAttribute:@"width" value:[NSString stringWithFormat:@"%i",rectWidth]];
-                    [xml writeAttribute:@"height" value:[NSString stringWithFormat:@"%i",rectHeight]];
+                    
+                    int rectWidth = (abs)((int)elements[1].points[0].x - (int)elements[0].points[0].x);
+                    int rectHeight = (abs)((int)elements[2].points[0].y - (int)elements[1].points[0].y);
+                    [str appendString:@"<rect "];
+                    [str appendString:[NSString stringWithFormat:@"x=\"%i\" ",(abs)((int)elements[0].points[0].x)]];
+                    [str appendString:[NSString stringWithFormat:@"y=\"%i\" ",(abs)((int)elements[0].points[0].y)]];
+                    [str appendString:[NSString stringWithFormat:@"width=\"%i\" ",rectWidth]];
+                    [str appendString:[NSString stringWithFormat:@"height=\"%i\" ",rectHeight]];
+                    [str appendString:[NSString stringWithFormat:@"style=\"%@\" />",shapeClosed ? svgStyleClose : svgStyleOpen]];
                 }
                 else if ( shapeType == kShapeTypeEllipse){
-                    int rx = (abs)((int)(elements[0].points[1].x - elements[0].points[0].x)/2);
-                    int ry = (abs)((int)(elements[0].points[1].y - elements[0].points[0].y)/2);
-                    int cx = (abs)((int)elements[0].points[1].x + rx);
-                    int cy = (abs)((int)elements[0].points[1].y + ry);
-                    [xml writeStartElement:@"ellipse"];
-                    [xml writeAttribute:@"cx" value:[NSString stringWithFormat:@"%i",cx]];
-                    [xml writeAttribute:@"cy" value:[NSString stringWithFormat:@"%i",cy]];
-                    [xml writeAttribute:@"rx" value:[NSString stringWithFormat:@"%i",rx]];
-                    [xml writeAttribute:@"ry" value:[NSString stringWithFormat:@"%i",ry]];
+                    int rx = (abs)((int)(elements[1].points[0].x - elements[0].points[0].x)/2);
+                    int ry = (abs)((int)(elements[2].points[0].y - elements[1].points[0].y)/2);
+                    int cx = (abs)((int)elements[0].points[0].x + rx);
+                    int cy = (abs)((int)elements[0].points[0].y + ry);
+                    [str appendString:@"<ellipse "];
+                    [str appendString:[NSString stringWithFormat:@"cx=\"%i\" ",cx]];
+                    [str appendString:[NSString stringWithFormat:@"cy=\"%i\" ",cy]];
+                    [str appendString:[NSString stringWithFormat:@"rx=\"%i\" ",rx]];
+                    [str appendString:[NSString stringWithFormat:@"ry=\"%i\" ",ry]];
+                    [str appendString:[NSString stringWithFormat:@"style=\"%@\" />",shapeClosed ? svgStyleClose : svgStyleOpen]];
                 }
                 else if ( shapeType == kShapeTypePath || shapeType == kShapeTypePolygon ) {
                     
-                    [xml writeStartElement:@"path"];
-                    NSMutableString * mutableString = [[NSMutableString alloc] init];
+                    [str appendString:@"<path d=\""];
                     for ( uint i=0;i<len;i++ ){
                         NSString * command = SVGPathCommandForCGPathElement(elements[i]);
                         if ( elements[i].type == kCGPathElementCloseSubpath){
-                            [mutableString appendString:[NSString stringWithFormat:@"%@ ",command]];
+                            [str appendString:[NSString stringWithFormat:@"%@ ",command]];
                         } else {
-                            [mutableString appendString:[NSString stringWithFormat:
+                            [str appendString:[NSString stringWithFormat:
                                                          @"%@%d %d ",
                                                          command,
                                                          (abs)((int)elements[i].points[0].x),
                                                          (abs)((int)elements[i].points[0].y)
                                                          ]];
                         };
-                    }
-                    [xml writeAttribute:@"d" value:mutableString];
-                    [mutableString release];
-                }
-                else {
-                    [xml writeStartElement:@"undefined_shape"];
+                    };
+                    [str appendString:[NSString stringWithFormat:@"\" style=\"%@\" />",shapeClosed ? svgStyleClose : svgStyleOpen]];
                 }
                 free(elements);
-                [xml writeAttribute:@"style" value:shapeClosed ? svgStyleClose : svgStyleOpen];
-                [xml writeEndElement];
-            
             }
+            [str appendString:@"</svg>"];
+            [xml writeCData:str];
+            [xml writeEndElement];
+            [str release];
             
-            [xml writeEndElement]; // svg
-            [xml writeEndElement]; // cnt:chars
-            [xml writeEndElement]; // oac:SvgConstraint
+            [xml writeEndElement];
+            [xml writeEndElement];
+            [xml writeEndElement];
+            [xml writeEndElement];
+            [xml writeEndElement];
             
-            [xml writeStartElement:@"dcterms:creator"];
-            [xml writeStartElement:@"foaf:Agent"];
-            [xml writeAttribute:@"rdf:about" value:@"author_link"];
+            [self appendElement:@"rdfs:label" withContent:note.title forXML:xml];
+            
+            [xml writeStartElement:@"oa:hasBody"];
+            [xml writeStartElement:@"cnt:ContentAsText"];
+            [xml writeAttribute:@"rdfs:about" value:@"urn:uuid:UUID"];
+            [self appendElement:@"cnt:chars" withContent:note.content forXML:xml];
+            [xml writeEndElement];
+            [xml writeEndElement];
+            
+            [xml writeStartElement:@"oa:annotatedBy"];
+            [xml writeStartElement:@"foaf:Person"];
+            [xml writeAttribute:@"rdf:about" value:@"urn:uuid:UUID"];
+            [xml writeStartElement:@"foaf:mbox"];
+            [xml writeAttribute:@"rdf:ressource" value:[NSString stringWithFormat:@"mailto:%@",note.owner.email]];
+            [xml writeEndElement];
             [xml writeStartElement:@"foaf:name"];
             [xml writeCharacters:note.owner.firstName];
             [xml writeCharacters:@" "];
             [xml writeCharacters:note.owner.lastName];
             [xml writeEndElement];
-            [xml writeStartElement:@"foaf:mbox"];
-            [xml writeAttribute:@"rdf:ressource" value:[NSString stringWithFormat:@"mailto:%@",note.owner.email]];
             [xml writeEndElement];
             [xml writeEndElement];
-            [xml writeStartElement:@"dcterms:created"];
-            [xml writeCharacters:[dateFormatter stringFromDate:note.creationDate]];
-            [xml writeEndElement];
-            [xml writeEndElement]; // dcterms:Creator
             
-            [xml writeEndElement]; // oac:Annotation
+            [self appendElement:@"oa:annotatedAt" withContent:[dateFormatter stringFromDate:note.creationDate] forXML:xml];
+            
+            [xml writeEndElement];
         }
     }
     
-    [xml writeEndElement]; // rdf:RDF
+    [xml writeEndElement];
     [xml writeEndDocument];
     
-    //NSLog(@"%@",[xml toString]);
+    NSLog(@"%@",[xml toString]);
     NSData * xmlData = [xml toData];
     [xml release];
     [dateFormatter release];

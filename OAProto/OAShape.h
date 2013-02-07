@@ -193,8 +193,6 @@ static NSData * NSDataFromCGPathElement( CGPathElement * elements, uint length )
     return (NSData *)path;
 }
 
-// Not actually used. Question : shall I use the points argument, or a memcpy ?
-// NSData methods logic says to memcpy, and the source is responsible for free'ing the argument.
 static CGPathElement CGPathElementMake( uint type, CGPoint * points)
 {
     CGPathElement element;
@@ -205,6 +203,16 @@ static CGPathElement CGPathElementMake( uint type, CGPoint * points)
         memcpy(element.points, points, len);
     }
     return element;
+}
+
+static int CGPathElementXint(CGPathElement * elements, uint index)
+{
+    return (abs)((int)elements[index].points[0].x);
+}
+
+static int CGPathElementYint(CGPathElement * elements, uint index)
+{
+    return (abs)((int)elements[index].points[0].y);
 }
 
 static CGPathElement CGPathElementCreateClose()
